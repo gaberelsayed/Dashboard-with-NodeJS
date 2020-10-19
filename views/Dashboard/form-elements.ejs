@@ -1,0 +1,129 @@
+<%- contentFor('HeaderCss') %>
+
+<%- contentFor('breadcrumb') %>
+<!-- start page title -->
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-flex align-items-center justify-content-between">
+            <h4 class="mb-0 font-size-18">قم بتعديل بيانات المسئول</h4>
+
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">النموذج</a></li>
+                    <li class="breadcrumb-item active">بيانات المسئول</li>
+                </ol>
+            </div>
+
+        </div>
+    </div>
+    <div  class="col-12">
+        <% if(error.length > 0) { %>
+            <div class="alert alert-danger flash"><%= error %></div>
+            <% } %>
+
+            <% if(success.length > 0) { %>
+                <div class="alert alert-success flash"><%= success %></div>
+                <% } %>
+    </div>
+</div>
+<!-- end page title -->
+
+<%- contentFor('body') %>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+
+                <h4 class="card-title">عدل البيانات الآتية</h4>
+                <p class="card-title-desc">عدل بيانات المسئول <%= admin.fullname %> من حيث الاسم الكامل والبريد الإلكتروني</p>
+
+               <form method="POST" action="/dashboard/settings/editInfo">
+                
+                <div class="form-group row">
+                    <label for="example-text-input" class="col-md-2 col-form-label">الاسم الكامل</label>
+                    <div class="col-md-10">
+                        <input class="form-control" type="text" value="<%= admin.fullname %>" id="example-text-input" name="fullname">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="example-text-input" class="col-md-2 col-form-label">البريد الإلكتروني</label>
+                    <div class="col-md-10">
+                        <input class="form-control" type="text" value="<%= admin.email %>" id="example-text-input" name="email">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <button type="submit" class="btn btn-success">تعديل الآن</button>
+                </div>
+              </form>
+            </div>
+        </div>
+    </div> <!-- end col -->
+</div>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+
+                <h4 class="card-title">عدل البيانات الآتية</h4>
+                <p class="card-title-desc">عدل بيانات المسئول <%= admin.fullname %> من حيث الرقم السري</p>
+
+                <form method="POST" action="/dashboard/settings/changePassword">
+                    
+                    <div class="form-group row">
+                        <label for="example-text-input" class="col-md-2 col-form-label">كلمة السر</label>
+                        <div class="col-md-10">
+                            <input class="form-control" type="password" id="example-text-input" name="password" placeholder="كلمة السر">
+                        </div>
+                    </div>
+    
+                    <div class="form-group row">
+                        <label for="example-text-input" class="col-md-2 col-form-label">تأكيد كلمة السر</label>
+                        <div class="col-md-10">
+                            <input class="form-control" type="password" id="example-text-input" name="confirmPassword" placeholder="تأكيد كلمة السر">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <button type="submit" class="btn btn-success">تغيير الآن</button>
+                    </div>
+                </form>
+                
+            </div>
+        </div>
+    </div> <!-- end col -->
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+
+                <h4 class="card-title">حذف الحساب نهائيًا</h4>
+                <p class="card-title-desc">قُم بحذف ذلك الحساب نهائيًا حساب <%= admin.fullname %></p>
+
+                <form method="POST" action="/dashboard/settings/deleteAccount">
+                    
+                    <div class="form-group row">
+                        <button type="submit" class="btn btn-danger">حذف بشكل كامل</button>
+                    </div>
+                </form>
+                
+            </div>
+        </div>
+    </div> <!-- end col -->
+</div>
+
+
+
+
+
+</div> <!-- container-fluid -->
+</div>
+<!-- End Page-content -->
+
+<%- contentFor('FooterJs') %>
+<script src="public/assets/libs/bs-custom-file-input/bs-custom-file-input.min.js"></script>
+
+<script src="public/assets/js/pages/form-element.init.js"></script>
+
+<%- contentFor('BottomJs') %>

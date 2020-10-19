@@ -1,0 +1,84 @@
+<%- include ('../Partials/HeaderRoot')  %>
+<div class="home-btn d-none d-sm-block">
+    <a href="/" class="text-dark"><i class="fas fa-home h2"></i></a>
+</div>
+<div class="account-pages pt-sm-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6 col-xl-5">
+                <div class="card overflow-hidden">
+                    <div class="bg-soft-primary">
+                        <div class="row">
+                            <div class="col-7">
+                                <div class="text-primary p-4">
+                                    <h5 class="text-primary">مرحبًا بعودتك إلى لوحة التحكم</h5>
+                                    <p>سجل دخولك لكي تقوم بالدخول</p>
+                                </div>
+                            </div>
+                            <div class="col-5 align-self-end">
+                                <img src="/assets/images/profile-img.png" alt="" class="img-fluid">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body pt-0">
+                        <div>
+                            <a href="/">
+                                <div class="avatar-md profile-user-wid mb-4">
+                                    <span class="avatar-title rounded-circle bg-light">
+                                        <img src="/assets/images/logo.svg" alt="" class="rounded-circle"
+                                            height="34">
+                                    </span>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="p-2">
+                            <form class="form-horizontal" method="post" action="/auth/login">
+
+                                <% if(error.length > 0) { %>
+                                <div class="alert alert-danger flash"><%= error %></div>
+                                <% } %>
+
+                                <% if(success.length > 0) { %>
+                                    <div class="alert alert-success flash"><%= success %></div>
+                                    <% } %>
+
+                                <div class="form-group">
+                                    <label for="username">البريد الإلكتروني</label>
+                                    <input type="text" name="email" class="form-control" value="admin@gmail.com"
+                                        id="username" placeholder="أدخل البريد الإلكتروني الآن" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="userpassword">الرقم السري</label>
+                                    <input type="password" name="password" value="0120975049" class="form-control"
+                                        id="userpassword" placeholder="أدخل كلمة السر الآن" required>
+                                </div>
+
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="customControlInline">
+                                    <label class="custom-control-label" for="customControlInline">تذكر كلمة السر</label>
+                                </div>
+
+                                <div class="mt-3">
+                                    <button class="btn btn-primary btn-block waves-effect waves-light" type="submit">تسجيل الدخول الآن</button>
+                                </div>
+
+                                <div class="mt-4 text-center">
+                                    <a href="/auth/forgot-password" class="text-muted"><i class="mdi mdi-lock mr-1"></i>
+                                        نسيت كلمة السر؟</a>
+                                        <p class="mb-0 mt-1">ليس لديك حساب؟ ? <a href="/auth/register" class="font-weight-medium text-primary"> التسجيل الآن
+                                        </a> </p>
+                                    <p class="mt-1">© <%= new Date().getFullYear(); %> المملكة العربية السعودية <i class="mdi mdi-heart text-danger"></i>
+                                        بواسطة الملك</p>
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include ('../Partials/FooterRoot')  %>
