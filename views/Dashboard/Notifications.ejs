@@ -21,7 +21,7 @@
 
 <%- contentFor('body') %>
 <div class="row">
-   <% admins.forEach((admin) => { %>
+   <% notifications.forEach((notification) => { %>
     <div class="col-12">
         <div class="media bg-white p-2 shadow mt-2 rounded-lg">
             <div class="avatar-xs mr-3">
@@ -30,10 +30,10 @@
                 </span>
             </div>
             <div class="media-body">
-                <h6 class="mt-0 mb-1">translation.Your_order_is_placed</h6>
+                <h6 class="mt-0 mb-1">إشعار جديد</h6>
                 <div class="font-size-12 text-muted">
-                    <p class="mb-1">translation.If_several_languages_the_grammar</p>
-                    <p class="mb-0"><i class="mdi mdi-clock-outline"></i> translation.min_ago
+                    <p class="mb-1">قام <%= notification.userID.fullname %> بتسجيل الدخول الآن</p>
+                    <p class="mb-0"><i class="mdi mdi-clock-outline"></i> <%= moment(notification.userID.createdAt).fromNow() %>
                     </p>
                 </div>
             </div>

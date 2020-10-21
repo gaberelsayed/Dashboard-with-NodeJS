@@ -3,7 +3,9 @@ const router = express.Router();
 const { ensureAuthenticated } = require('../config/auth');
 const bcrypt = require('bcryptjs');
 const Admin = require('../models/Admin');
-
+const User = require('../models/User');
+const userNotification = require('../models/userNotification');
+const moment = require('moment')
 router.get('/', ensureAuthenticated, async (req, res, next) => {
     try {
         const admins = await Admin.find({});
@@ -97,8 +99,8 @@ router.post('/settings/deleteAccount', ensureAuthenticated, async (req, res, nex
 
 router.get('/accounts', ensureAuthenticated, async (req, res, next) => {
     try {
-        const admins = await Admin.find({ });
-        res.render('Dashboard/contacts-grid', { admins: admins });
+        const users = await User.find({ });
+        res.render('Dashboard/contacts-grid', { users: users });
     } catch (err) {
         req.flash('error', 'حدث خطأ ما بالسيرفر');
         res.redirect('/dashboard');
@@ -117,8 +119,8 @@ router.get('/passport', ensureAuthenticated, async (req, res, next) => {
 
 router.get('/notifications', ensureAuthenticated, async (req, res, next) => {
     try {
-        const admins = await Admin.find({ });
-        res.render('Dashboard/Notifications', { admins: admins });
+        const notifications = await userNotification.find({ }).populate('userID')
+        res.render('Dashboard/Notifications', { notifications: notifications, moment: moment });
     } catch (err) {
         req.flash('error', 'حدث خطأ ما بالسيرفر');
         res.redirect('/dashboard');
