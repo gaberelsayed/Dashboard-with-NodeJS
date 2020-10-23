@@ -101,15 +101,14 @@
 <!-- end row -->
 <div class="row">
 
-    
-    <% [{ name: 'عدد المسئولون', number: 3 }, { name: 'عدد الحسابات', number: 20 }, { name: 'عدد الطلبات', number: 125 } ].forEach((obj) => { %>
+
 <div class="col-md-4">
         <div class="card mini-stats-wid">
             <div class="card-body">
                 <div class="media">
                     <div class="media-body">
-                        <p class="text-muted font-weight-medium"><%= obj.name %></p>
-                        <h4 class="mb-0"><%= obj.number %></h4>
+                        <p class="text-muted font-weight-medium">عدد المسئولين</p>
+                        <h4 class="mb-0"><%= admins_count %></h4>
                     </div>
 
                     <div class="mini-stat-icon avatar-sm rounded-circle bg-primary align-self-center">
@@ -121,7 +120,48 @@
             </div>
         </div>
     </div>
-   <%  }) %>
+
+
+<div class="col-md-4">
+    <div class="card mini-stats-wid">
+        <div class="card-body">
+            <div class="media">
+                <div class="media-body">
+                    <p class="text-muted font-weight-medium">عدد الحسابات</p>
+                    <h4 class="mb-0"><%= users_count %></h4>
+                </div>
+
+                <div class="mini-stat-icon avatar-sm rounded-circle bg-primary align-self-center">
+                    <span class="avatar-title">
+                        <i class="bx bx-copy-alt font-size-24"></i>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="col-md-4">
+    <div class="card mini-stats-wid">
+        <div class="card-body">
+            <div class="media">
+                <div class="media-body">
+                    <p class="text-muted font-weight-medium">عدد الطلبات</p>
+                    <h4 class="mb-0"><%= 25 %></h4>
+                </div>
+
+                <div class="mini-stat-icon avatar-sm rounded-circle bg-primary align-self-center">
+                    <span class="avatar-title">
+                        <i class="bx bx-copy-alt font-size-24"></i>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+
 </div>
 
 

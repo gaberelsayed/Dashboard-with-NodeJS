@@ -234,7 +234,7 @@ File: Main Js File
     });
 
     // Recieve User Notification
-    socket.on("userJoin", (data) => {
+    socket.on("newUser", (data) => {
       $(".notificationSuccess")
         .html(
           `
@@ -242,7 +242,7 @@ File: Main Js File
 <audio autoplay class="d-none">
 <source src="/assets/sounds/notification.mp3" type="audio/mpeg">
 </audio>
-<h4 class="text-white">إشعار الآن</h4>
+<h4 class="text-white">إشعار بمستخدم جديد</h4>
 <p class="mb-0 text-white" style="font-size: 14px">قام ${data.fullname} بتسجيل الدخول إلى الموقع الآن</p>
  `
         )

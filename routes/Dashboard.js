@@ -9,7 +9,9 @@ const moment = require('moment')
 router.get('/', ensureAuthenticated, async (req, res, next) => {
     try {
         const admins = await Admin.find({});
-        res.render('Dashboard/index', { page: 'Dashboard', admins: admins, title: 'good', layout: 'layout' });
+        const users_count = await User.count();
+        const userNotify_count = await userNotification.count();
+        res.render('Dashboard/index', { page: 'Dashboard', admins: admins, title: 'good', layout: 'layout', admins_count: admins.length, users_count: users_count, userNotify_count: userNotify_count  });
     } catch (err) {
         req.flash('error', 'حدث خطأ ما بالسيرفر');
         res.redirect('/dashboard');

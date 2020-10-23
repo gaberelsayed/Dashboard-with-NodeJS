@@ -33,7 +33,7 @@
                 <h6 class="mt-0 mb-1">إشعار جديد</h6>
                 <div class="font-size-12 text-muted">
                     <p class="mb-1">قام <%= notification.userID.fullname %> بتسجيل الدخول الآن</p>
-                    <p class="mb-0"><i class="mdi mdi-clock-outline"></i> <%= moment(notification.userID.createdAt).fromNow() %>
+                    <p class="mb-0"><i class="mdi mdi-clock-outline"></i> <%= moment(notification.createdAt).fromNow() %>
                     </p>
                 </div>
             </div>
