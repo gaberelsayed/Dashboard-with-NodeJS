@@ -32,7 +32,7 @@
             <div class="media-body">
                 <h6 class="mt-0 mb-1">إشعار جديد</h6>
                 <div class="font-size-12 text-muted">
-                    <p class="mb-1">قام <%= notification.userID.fullname %> بعمل طلب إقامة.  <a class="btn btn-success btn-sm" target="_blank" href="/resident/<%= notification.residentID %>">متابعة الطلب</a> </p>
+                    <p class="mb-1">قام <%= notification.userID.fullname %> بعمل طلب إقامة.  <a class="btn btn-success btn-sm" target="_blank" href="/dashboard/resident/<%= notification.residentID %>">متابعة الطلب</a> </p>
                     <p class="mb-0"><i class="mdi mdi-clock-outline"></i> إشعار مُنذ <%= moment(notification.createdAt).fromNow() %>
                     </p>
                 </div>

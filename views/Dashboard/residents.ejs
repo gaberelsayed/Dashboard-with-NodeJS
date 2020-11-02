@@ -57,7 +57,7 @@
                                         <img src="<%= resident.accepted === true? '/assets//images/Check/right.PNG' : '/assets//images/Check/wrong.PNG' %>" title="<%= resident.accepted === true? 'تمت الموافقة على الطلب' : 'لم تتم الموافقة على الطلب' %>" alt="Image is not shown due to a problem" style="height: 25px; width: 25px; border-radius: 50%"/>
                                     </td>
                                     <td>
-                                        <a type="button" class="btn btn-success btn-sm btn-rounded waves-effect waves-light text-white" target="_blank" href="/resident/<%= resident._id %>">زيارة</a>
+                                        <a type="button" class="btn btn-success btn-sm btn-rounded waves-effect waves-light text-white" target="_blank" href="/dashboard/resident/<%= resident._id %>">زيارة</a>
                                     </td>
                                     <td>
                                         <%= resident.Agreement.acceptTerms === "on"? 'تم' : 'لم يتم' %>

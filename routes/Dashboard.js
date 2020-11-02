@@ -121,7 +121,7 @@ router.get('/residents', ensureAuthenticated, async (req, res) => {
     }
 })
 
-router.get('/notifications/users', ensureAuthenticated, async (req, res, next) => {
+router.get('/notifications/users', ensureAuthenticated, async (req, res) => {
     try {
         const notifications = await userNotification.find({ }).populate('userID')
         res.render('Dashboard/userNotifications', { notifications: notifications, moment: moment });
@@ -131,11 +131,32 @@ router.get('/notifications/users', ensureAuthenticated, async (req, res, next) =
     }
 })
 
-router.get('/notifications/residents', ensureAuthenticated, async (req, res, next) => {
+router.get('/notifications/residents', ensureAuthenticated, async (req, res) => {
     try {
         const notifications = await residentNotification.find({ }).populate('userID')
         res.render('Dashboard/residentNotifications', { notifications: notifications, moment: moment });
     } catch (err) {
+        req.flash('error', 'حدث خطأ ما بالسيرفر');
+        res.redirect('/dashboard');
+    }
+})
+
+router.get('/resident/:residentID', ensureAuthenticated, async (req, res) => {
+    try {
+        const residentID = req.params.residentID;
+        if (!residentID.match(/^[0-9a-fA-F]{24}$/)) {
+            req.flash('error', 'رقم الطلب هذا غير صالح');
+            return res.redirect('/dashboard');
+          }
+        var resident = await Resident.findOne({ _id: residentID });
+        if (!resident) {
+            req.flash('error', 'هذا الطلب غير موجود');
+            return res.redirect('/dashboard');
+        }
+        resident = await Resident.findOne({ _id: residentID }).populate('userID');
+        res.render('Dashboard/Request', { resident: resident, moment: moment });
+    } catch (err) {
+        console.log(err.message);
         req.flash('error', 'حدث خطأ ما بالسيرفر');
         res.redirect('/dashboard');
     }
