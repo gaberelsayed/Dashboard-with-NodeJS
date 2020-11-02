@@ -5,7 +5,7 @@
 <div class="row">
     <div class="col-12">
         <div class="page-title-box d-flex align-items-center justify-content-between">
-            <h4 class="mb-0 font-size-18">جميع الإشعارات</h4>
+            <h4 class="mb-0 font-size-18">جميع الإشعارات الخاصة بالحسابات الجديدة</h4>
 
             <div class="page-title-right">
                 <ol class="breadcrumb m-0">
@@ -32,8 +32,8 @@
             <div class="media-body">
                 <h6 class="mt-0 mb-1">إشعار جديد</h6>
                 <div class="font-size-12 text-muted">
-                    <p class="mb-1">قام <%= notification.userID.fullname %> بتسجيل الدخول الآن</p>
-                    <p class="mb-0"><i class="mdi mdi-clock-outline"></i> <%= moment(notification.createdAt).fromNow() %>
+                    <p class="mb-1">تم إنشاء حساب جديد من قبل <%= notification.userID.fullname %></p>
+                    <p class="mb-0"><i class="mdi mdi-clock-outline"></i> إشعار مُنذ <%= moment(notification.createdAt).fromNow() %>
                     </p>
                 </div>
             </div>
@@ -43,14 +43,14 @@
 </div>
 
 
-<div class="row">
+<!-- <div class="row">
     <div class="col-12">
         <div class="text-center my-3">
             <a href="javascript:void(0);" class="text-success"><i class="bx bx-hourglass bx-spin mr-2"></i> Load more
             </a>
         </div>
-    </div> <!-- end col-->
-</div>
+    </div> 
+</div> -->
 <!-- end row -->
 
 <%- contentFor('FooterJs') %>

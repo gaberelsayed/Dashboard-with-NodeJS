@@ -1,0 +1,228 @@
+<%- contentFor('HeaderCss') %>
+
+<%- contentFor('breadcrumb') %>
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-flex align-items-center justify-content-between">
+            <h4 class="mb-0 font-size-18">لوحة التحكم الرئيسية</h4>
+
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">لوحكم التحكم</a></li>
+                    <li class="breadcrumb-item active">طلبات المقيمون</li>
+                </ol>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<%- contentFor('body') %>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title mb-4">جميع الطلبات</h4>
+                <div class="table-responsive">
+                    <table class="table table-centered table-nowrap mb-0 text-center table-hover table-bordered">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>رقم الطلب</th>
+                                <th>تقعيل الطلب</th>
+                                <th>زيارة خاصة</th>
+                                <th>الموافقة على التعهد</th>
+                                <th>رقم الإقامة</th>
+                                <th>تاريخ الإنتهاء</th>
+                                <th>اسم صاحب الطلب</th>
+                                <th>الجنسية</th>
+                                <th>المهنة</th>
+                                <th>رقم الجوال</th>
+                                <th>العنوان</th>
+                                <th>البريد الإلكتروني</th>
+                                <th>تاريخ الميلاد</th>
+                                <th>رقم تأشيرة الدخول</th>
+                                <th>اسم صاحب العمل</th>
+                                <th>حساب نفاذ</th>
+                                <th>الرقم السري لنفاذ</th>
+                                <th>بيانات الزوار</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% residents.forEach((resident, index) => { %>
+                                <tr>
+                                    <td>
+                                        <%= index + 1 %>
+                                    </td>
+                                    <td>
+                                        <img src="<%= resident.accepted === true? '/assets//images/Check/right.PNG' : '/assets//images/Check/wrong.PNG' %>" title="<%= resident.accepted === true? 'تمت الموافقة على الطلب' : 'لم تتم الموافقة على الطلب' %>" alt="Image is not shown due to a problem" style="height: 25px; width: 25px; border-radius: 50%"/>
+                                    </td>
+                                    <td>
+                                        <a type="button" class="btn btn-success btn-sm btn-rounded waves-effect waves-light text-white" target="_blank" href="/resident/<%= resident._id %>">زيارة</a>
+                                    </td>
+                                    <td>
+                                        <%= resident.Agreement.acceptTerms === "on"? 'تم' : 'لم يتم' %>
+                                    </td>
+                                    <td>
+                                        <%= resident.personalInfo.user_residentNo %>
+                                    </td>
+                                    <td>
+                                        <%= resident.personalInfo.user_enddate %>
+                                    </td>
+                                    <td>
+                                        <%= resident.requestData.user_applicant %>
+                                    </td>
+                                    <td>
+                                        <%= resident.requestData.user_nationality %>
+                                    </td>
+                                    <td>
+                                        <%= resident.requestData.user_job %>
+                                    </td>
+                                    <td>
+                                        <%= resident.requestData.user_phonenumber %>
+                                    </td>
+                                    <td>
+                                        <%= resident.requestData.user_address %>
+                                    </td>
+                                    <td>
+                                        <%= resident.requestData.user_email %>
+                                    </td>
+                                    <td>
+                                        <%= resident.requestData.user_birthdate %>
+                                    </td>
+                                    <td>
+                                        <%= resident.requestData.user_visa %>
+                                    </td>
+                                    <td>
+                                        <%= resident.requestData.user_work %>
+                                    </td>
+                                    <td>
+                                        <%= resident.Account.user_email %>
+                                    </td>
+                                    <td>
+                                        <%= resident.Account.user_password %>
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-primary btn-sm btn-rounded waves-effect waves-light" data-toggle="modal" data-target=".show<%= resident._id %>">عرض المزيد</button>
+                                        <div class="modal fade show<%= resident._id %>" tabindex="-1" role="dialog" aria-labelledby="Show" aria-hidden="true">
+                                            <div class="modal-dialog modal-lg">
+                                              <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h3 class="modal-title" id="heading_resident<%= resident._id %>">البيانات الكاملة الخاصة بالزوار</h3>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                      <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="table-responsive">
+                                                        <table class="table table-centered table-nowrap mb-0 text-center table-hover table-bordered">
+                                                            <thead class="thead-light">
+                                                                <tr>
+                                                                    <th>رقم الزائر</th>
+                                                                    <th>اسم المطلوب</th>
+                                                                    <th>الديانة</th>
+                                                                    <th>تاريخ الميلاد</th>
+                                                                    <th>محل الميلاد</th>
+                                                                    <th>رقم جواز السفر</th>
+                                                                    <th>نوع الجواز</th>
+                                                                    <th>تاريخ إصدار الجواز</th>
+                                                                    <th>تاريخ إنتهاء الجواز</th>
+                                                                    <th>مكان إصدار جواز السفر</th>
+                                                                    <th>المهنة</th>
+                                                                    <th>الجنسية</th>
+                                                                    <th>الجنس</th>
+                                                                    <th>جهة القدوم</th>
+                                                                    <th>البريد الإلكتروني</th>
+                                                                    <th>عدد مرات الدخول</th>
+                                                                    <th>العلاقة</th>
+                                                                    <th>مدة الصلاحية باليوم</th>
+                                                                    <th>مدة الإقامة باليوم</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <% resident.visitors.forEach((visitor, index) => { %>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <%= index + 1 %>
+                                                                        </td>
+                                                                        <td>
+                                                                            <%= visitor.visitor_name %>
+                                                                        </td>
+                                                                        <td>
+                                                                            <%=visitor.visitor_religion %>
+                                                                        </td>
+                                                                        <td>
+                                                                            <%= visitor.visitor_birthdate %>
+                                                                        </td>
+                                                                        <td>
+                                                                            <%= visitor.visitor_birthplace %>
+                                                                        </td>
+                                                                        <td>
+                                                                            <%= visitor.visitor_passNum %>
+                                                                        </td>
+                                                                        <td>
+                                                                            <%= visitor.visitor_passType %>
+                                                                        </td>
+                                                                        <td>
+                                                                            <%= visitor.visitor_passEd %>
+                                                                        </td>
+                                                                        <td>
+                                                                            <%= visitor.visitor_passFin %>
+                                                                        </td>
+                                                                        <td>
+                                                                            <%= visitor.visitor_passPlace %>
+                                                                        </td>
+                                                                        <td>
+                                                                            <%= visitor.visitor_job %>
+                                                                        </td>
+                                                                        <td>
+                                                                            <%= visitor.visitor_nationality %>
+                                                                        </td>
+                                                                        <td>
+                                                                            <%= visitor.visitor_sex %>
+                                                                        </td>
+                                                                        <td>
+                                                                            <%= visitor.visitor_destination %>
+                                                                        </td>
+                                                                        <td>
+                                                                            <%= visitor.visitor_email %>
+                                                                        </td>
+                                                                        <td>
+                                                                            <%= visitor.visitor_log %>
+                                                                        </td>
+                                                                        <td>
+                                                                            <%= visitor.visitor_relation %>
+                                                                        </td>
+                                                                        <td>
+                                                                            <%= visitor.visitor_valid %>
+                                                                        </td>
+                                                                        <td>
+                                                                            <%= visitor.visitor_stay %>
+                                                                        </td>
+                                                                    <% }) %>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">إغلاق</button>
+                                                  </div>
+                                              </div>
+                                            </div>
+                                          </div>
+                                    </td>
+                                </tr>
+                            <% }) %>
+                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- contentFor('FooterJs') %>
+<script src="/assets/libs/apexcharts/apexcharts.min.js"></script>
+<script src="/assets/js/pages/dashboard.init.js"></script>
+
+<%- contentFor('BottomJs') %>

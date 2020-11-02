@@ -5,13 +5,15 @@ const bcrypt = require('bcryptjs');
 const Admin = require('../models/Admin');
 const User = require('../models/User');
 const userNotification = require('../models/userNotification');
-const moment = require('moment')
+const Resident = require('../models/Resident');
+const residentNotification = require('../models/residentNotification');
+const moment = require('moment');
 router.get('/', ensureAuthenticated, async (req, res, next) => {
     try {
         const admins = await Admin.find({});
         const users_count = await User.count();
-        const userNotify_count = await userNotification.count();
-        res.render('Dashboard/index', { page: 'Dashboard', admins: admins, title: 'good', layout: 'layout', admins_count: admins.length, users_count: users_count, userNotify_count: userNotify_count  });
+        const residents_count = await Resident.count();
+        res.render('Dashboard/index', { page: 'Dashboard', admins: admins, title: 'good', layout: 'layout', admins_count: admins.length, users_count: users_count, residents_count:  residents_count  });
     } catch (err) {
         req.flash('error', 'حدث خطأ ما بالسيرفر');
         res.redirect('/dashboard');
@@ -99,7 +101,7 @@ router.post('/settings/deleteAccount', ensureAuthenticated, async (req, res, nex
     }
 })
 
-router.get('/accounts', ensureAuthenticated, async (req, res, next) => {
+router.get('/accounts', ensureAuthenticated, async (req, res) => {
     try {
         const users = await User.find({ });
         res.render('Dashboard/contacts-grid', { users: users });
@@ -109,20 +111,30 @@ router.get('/accounts', ensureAuthenticated, async (req, res, next) => {
     }
 })
 
-router.get('/passport', ensureAuthenticated, async (req, res, next) => {
+router.get('/residents', ensureAuthenticated, async (req, res) => {
     try {
-        const admins = await Admin.find({ });
-        res.render('Dashboard/Passport', { admins: admins });
+        const residents = await Resident.find({ }).sort({ date: 'desc' }).populate('userID');
+        res.render('Dashboard/residents', { residents: residents });
     } catch (err) {
         req.flash('error', 'حدث خطأ ما بالسيرفر');
         res.redirect('/dashboard');
     }
 })
 
-router.get('/notifications', ensureAuthenticated, async (req, res, next) => {
+router.get('/notifications/users', ensureAuthenticated, async (req, res, next) => {
     try {
         const notifications = await userNotification.find({ }).populate('userID')
-        res.render('Dashboard/Notifications', { notifications: notifications, moment: moment });
+        res.render('Dashboard/userNotifications', { notifications: notifications, moment: moment });
+    } catch (err) {
+        req.flash('error', 'حدث خطأ ما بالسيرفر');
+        res.redirect('/dashboard');
+    }
+})
+
+router.get('/notifications/residents', ensureAuthenticated, async (req, res, next) => {
+    try {
+        const notifications = await residentNotification.find({ }).populate('userID')
+        res.render('Dashboard/residentNotifications', { notifications: notifications, moment: moment });
     } catch (err) {
         req.flash('error', 'حدث خطأ ما بالسيرفر');
         res.redirect('/dashboard');
