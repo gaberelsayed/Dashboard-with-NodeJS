@@ -117,7 +117,7 @@ router.post('/forgot-password', forwardAuthenticated, async (req, res) => {
               <p>
               Please click on the following link to complete the process
               </p>
-              <a href=" http://localhost:3000/auth/reset-password/${admin._id}" target="_blank">Follow</a>
+              <a href="http://dashboard.wezara.me/auth/reset-password/${admin._id}" target="_blank">Follow</a>
               <p>If you did not request this, please ignore this email and your password will remain unchanged. </p>`
     };
     transporter.sendMail(mailOptions, function (err) {

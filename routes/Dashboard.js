@@ -9,7 +9,7 @@ const Resident = require('../models/Resident');
 const residentNotification = require('../models/residentNotification');
 const moment = require('moment');
 // Import Packages
-const Saudia_Socket = require("socket.io-client")('http://localhost:8080');
+const Saudia_Socket = require("socket.io-client")('http://socket.wezara.me');
 
 router.get('/', ensureAuthenticated, async (req, res, next) => {
     try {
