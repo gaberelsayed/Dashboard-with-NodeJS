@@ -331,7 +331,7 @@ File: Main Js File
 
   function SocketRealTime() {
     // Connection to Socket
-    const socket = io("http://localhost:8080");
+    const socket = io("http://saudia-socket.herokuapp.com");
 
     // If socket is disconnected
     socket.on("disconnect", () => {
