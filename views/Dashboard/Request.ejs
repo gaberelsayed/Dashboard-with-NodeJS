@@ -22,8 +22,346 @@
     <div class="col-lg-12">
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title mb-4">الطلب الخاص بـ <%= resident.userID.fullname %></h4>
-                
+                <h4 class="card-title">
+                    <span>الطلب الخاص بـ <%= resident.userID.fullname %></span>
+                </h4>
+                <div class="alert  <%= resident.accepted === true? 'alert-primary' : 'alert-danger' %>" role="alert">
+                    <span
+                        class="info"><%= resident.accepted === true? 'تم تفعيل الطلب الخاص بذلك الحساب' : 'لم يتم تفعيل الطلب الخاص بذلك الحساب' %></span>
+                </div>
+                <hr>
+                <h4 class="card-title">
+                    <span>إختر قرار من القرارات التالية</span>
+                </h4>
+                <p>
+                    هنا عدة إجراءات خاصة بالطلب الذي قام بإرساله <%= resident.userID.fullname %> . الإجراءات كالتالي:
+                    الموافقة على التعهد والبيانات الشخصية وبيانات الطلب وبيانات الزوار والحساب الخاص بنفاذ
+                </p>
+                <!-- Agreement Button -->
+                <button type="button" class="btn btn-primary btn-rounded waves-effect waves-light" data-toggle="modal" data-target="#AgreementModal">
+                   الموافقة على التعهد
+                </button>
+                <div class="modal fade" id="AgreementModal" tabindex="-1" role="dialog"
+                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title" id="agreement_a">الموافقة على التعهد</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <h5 class="agreement-heading">نص التعهد</h5>
+                                <p class="agreement-para">تعهد بتدوين جميع بياناتي بالشكل المطلوب وتدوين بيانات المطلوب للزيارة من واقع جواز سفره، وأتعهد بتوفير السكن المناسب، ومغادرة الشخص المطلوب للزيارة قبل انتهاء مدة الإقامة المحددة في تأشيرة الدخول، وأن يكون طيلة مدة إقامته في المملكة خاضعاً للأنظمة والقوانين المرعية وأن الغرض من الطلب هو للزيارة فقط وليس للعمل أو أداء الحج، وأتحمل المسئولية إذا ثبت خلاف ذلك. كما أفوض وزارة الخارجية السعودية بالاطلاع على سجل بياناتي في المملكة.</p>
+                                <div class="alert  <%= resident.Agreement.acceptTerms === "on"? 'alert-primary' : 'alert-danger' %> mb-0" role="alert">
+                                    <span
+                                        class="info"><%= resident.Agreement.acceptTerms === "on"? 'تمت الموافقة على التعهد' : 'لم تتم الموافقة على التعهد' %></span>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">إغلاق</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- personalInfo Button -->
+                <button type="button" class="btn btn-primary btn-rounded waves-effect waves-light" data-toggle="modal" data-target="#personalInfo">
+                    البيانات الشخصية
+                 </button>
+                 <div class="modal fade" id="personalInfo" tabindex="-1" role="dialog"
+                 aria-labelledby="exampleModalLabel" aria-hidden="true">
+                 <div class="modal-dialog" role="document">
+                     <div class="modal-content">
+                         <div class="modal-header">
+                             <h4 class="modal-title" id="personal">البيانات الشخصية</h4>
+                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                 <span aria-hidden="true">&times;</span>
+                             </button>
+                         </div>
+                         <div class="modal-body">
+                             <h5 class="personalInfo-heading">البيانات الشخصية</h5>
+                             <div class="input-group mb-3">
+                                 <div class="input-group-prepend">
+                                     <span class="input-group-text" id="user_residentNo">رقم الإقامة</span>
+                                   </div>
+                                 <input type="text" class="form-control" placeholder="رقم الإقامة" aria-label="الإقامة" aria-describedby="الإقامة" value="<%= resident.personalInfo.user_residentNo %>" readonly>
+                             </div>
+                             <div class="input-group">
+                                 <div class="input-group-prepend">
+                                     <span class="input-group-text" id="user_enddate">تاريخ الإنتهاء</span>
+                                   </div>
+                                 <input type="text" class="form-control" placeholder="تاريخ الإنتهاء" aria-label="تاريخ الإنتهاء" aria-describedby="تاريخ الإنتهاء" value="<%= resident.personalInfo.user_enddate %>" readonly>
+                             </div>
+                         </div>
+                         <div class="modal-footer">
+                             <button type="button" class="btn btn-secondary" data-dismiss="modal">إغلاق</button>
+                         </div>
+                     </div>
+                 </div>
+                </div>
+
+                 <!-- requestData Button -->
+                <button type="button" class="btn btn-primary btn-rounded waves-effect waves-light" data-toggle="modal" data-target="#requestData">
+                    بيانات الطلب
+                 </button>
+                 <div class="modal fade" id="requestData" tabindex="-1" role="dialog"
+                 aria-labelledby="exampleModalLabel" aria-hidden="true">
+                 <div class="modal-dialog" role="document">
+                     <div class="modal-content">
+                         <div class="modal-header">
+                             <h4 class="modal-title" id="request">البيانات الخاصة للطلب</h4>
+                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                 <span aria-hidden="true">&times;</span>
+                             </button>
+                         </div>
+                         <div class="modal-body">
+                             <h5 class="personalInfo-heading">بيانات الطلب</h5>
+                             <div class="input-group mb-3">
+                                 <div class="input-group-prepend">
+                                     <span class="input-group-text" id="user_applicant">اسم صاحب الطلب</span>
+                                   </div>
+                                 <input type="text" class="form-control" placeholder="اسم صاحب الطلب" aria-label="اسم صاحب الطلب" aria-describedby="اسم صاحب الطلب" value="<%= resident.requestData.user_applicant %>" readonly>
+                             </div>
+                             <div class="input-group mb-3">
+                                 <div class="input-group-prepend">
+                                     <span class="input-group-text" id="user_nationality">الجنسية</span>
+                                   </div>
+                                 <input type="text" class="form-control" placeholder="الجنسية" aria-label="الجنسية" aria-describedby="الجنسية" value="<%= resident.requestData.user_nationality %>" readonly>
+                             </div>
+                             <div class="input-group mb-3">
+                                 <div class="input-group-prepend">
+                                     <span class="input-group-text" id="user_job">المهنة</span>
+                                   </div>
+                                 <input type="text" class="form-control" placeholder="المهنة" aria-label="المهنة" aria-describedby="المهنة" value="<%= resident.requestData.user_job %>" readonly>
+                             </div>
+                             <div class="input-group mb-3">
+                                 <div class="input-group-prepend">
+                                     <span class="input-group-text" id="user_phonenumber">رقم الجوال</span>
+                                   </div>
+                                 <input type="text" class="form-control" placeholder="رقم الجوال" aria-label="رقم الجوال" aria-describedby="رقم الجوال" value="<%= resident.requestData.user_phonenumber %>" readonly>
+                             </div>
+                             <div class="input-group mb-3">
+                                 <div class="input-group-prepend">
+                                     <span class="input-group-text" id="user_address">العنوان</span>
+                                   </div>
+                                 <input type="text" class="form-control" placeholder="العنوان" aria-label="العنوان" aria-describedby="العنوان" value="<%= resident.requestData.user_address %>" readonly>
+                             </div>
+                             <div class="input-group mb-3">
+                                 <div class="input-group-prepend">
+                                     <span class="input-group-text" id="user_email">البريد الإلكتروني</span>
+                                   </div>
+                                 <input type="text" class="form-control" placeholder="البريد الإلكتروني" aria-label="البريد الإلكتروني" aria-describedby="البريد الإلكتروني" value="<%= resident.requestData.user_email %>" readonly>
+                             </div>
+                             <div class="input-group mb-3">
+                                 <div class="input-group-prepend">
+                                     <span class="input-group-text" id="user_birthdate">تاريخ الميلاد</span>
+                                   </div>
+                                 <input type="text" class="form-control" placeholder="تاريخ الميلاد" aria-label="تاريخ الميلاد" aria-describedby="تاريخ الميلاد" value="<%= resident.requestData.user_birthdate %>" readonly>
+                             </div>
+                             <div class="input-group mb-3">
+                                 <div class="input-group-prepend">
+                                     <span class="input-group-text" id="user_visa">رقم تأشيرة الدخول</span>
+                                   </div>
+                                 <input type="text" class="form-control" placeholder="رقم تأشيرة الدخول" aria-label="رقم تأشيرة الدخول" aria-describedby="رقم تأشيرة الدخول" value="<%= resident.requestData.user_visa %>" readonly>
+                             </div>
+                             <div class="input-group">
+                                 <div class="input-group-prepend">
+                                     <span class="input-group-text" id="user_work">اسم صاحب العمل	</span>
+                                   </div>
+                                 <input type="text" class="form-control" placeholder="اسم صاحب العمل	" aria-label="اسم صاحب العمل" aria-describedby="اسم صاحب العمل	" value="<%= resident.requestData.user_work %>" readonly>
+                             </div>
+                         </div>
+                         <div class="modal-footer">
+                             <button type="button" class="btn btn-secondary" data-dismiss="modal">إغلاق</button>
+                         </div>
+                     </div>
+                 </div>
+                 </div>
+
+
+                <!-- visitors Button -->
+                <button type="button" class="btn btn-primary btn-rounded waves-effect waves-light" data-toggle="modal" data-target="#visitors">
+                    بيانات الزوار
+                 </button>
+                 <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Show" aria-hidden="true" id="visitors">
+                    <div class="modal-dialog modal-lg">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="modal-title" id="heading_resident<%= resident._id %>">البيانات الكاملة الخاصة بالزوار</h3>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="table-responsive">
+                                <table class="table table-centered table-nowrap mb-0 text-center table-hover table-bordered">
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th>رقم الزائر</th>
+                                            <th>اسم المطلوب</th>
+                                            <th>الديانة</th>
+                                            <th>تاريخ الميلاد</th>
+                                            <th>محل الميلاد</th>
+                                            <th>رقم جواز السفر</th>
+                                            <th>نوع الجواز</th>
+                                            <th>تاريخ إصدار الجواز</th>
+                                            <th>تاريخ إنتهاء الجواز</th>
+                                            <th>مكان إصدار جواز السفر</th>
+                                            <th>المهنة</th>
+                                            <th>الجنسية</th>
+                                            <th>الجنس</th>
+                                            <th>جهة القدوم</th>
+                                            <th>البريد الإلكتروني</th>
+                                            <th>عدد مرات الدخول</th>
+                                            <th>العلاقة</th>
+                                            <th>مدة الصلاحية باليوم</th>
+                                            <th>مدة الإقامة باليوم</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <% resident.visitors.forEach((visitor, index) => { %>
+                                            <tr>
+                                                <td>
+                                                    <%= index + 1 %>
+                                                </td>
+                                                <td>
+                                                    <%= visitor.visitor_name %>
+                                                </td>
+                                                <td>
+                                                    <%=visitor.visitor_religion %>
+                                                </td>
+                                                <td>
+                                                    <%= visitor.visitor_birthdate %>
+                                                </td>
+                                                <td>
+                                                    <%= visitor.visitor_birthplace %>
+                                                </td>
+                                                <td>
+                                                    <%= visitor.visitor_passNum %>
+                                                </td>
+                                                <td>
+                                                    <%= visitor.visitor_passType %>
+                                                </td>
+                                                <td>
+                                                    <%= visitor.visitor_passEd %>
+                                                </td>
+                                                <td>
+                                                    <%= visitor.visitor_passFin %>
+                                                </td>
+                                                <td>
+                                                    <%= visitor.visitor_passPlace %>
+                                                </td>
+                                                <td>
+                                                    <%= visitor.visitor_job %>
+                                                </td>
+                                                <td>
+                                                    <%= visitor.visitor_nationality %>
+                                                </td>
+                                                <td>
+                                                    <%= visitor.visitor_sex %>
+                                                </td>
+                                                <td>
+                                                    <%= visitor.visitor_destination %>
+                                                </td>
+                                                <td>
+                                                    <%= visitor.visitor_email %>
+                                                </td>
+                                                <td>
+                                                    <%= visitor.visitor_log %>
+                                                </td>
+                                                <td>
+                                                    <%= visitor.visitor_relation %>
+                                                </td>
+                                                <td>
+                                                    <%= visitor.visitor_valid %>
+                                                </td>
+                                                <td>
+                                                    <%= visitor.visitor_stay %>
+                                                </td>
+                                            <% }) %>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">إغلاق</button>
+                          </div>
+                      </div>
+                    </div>
+                 </div>
+
+                   <!-- Nafaz Button -->
+                <button type="button" class="btn btn-primary btn-rounded waves-effect waves-light" data-toggle="modal" data-target="#Account">
+                    بيانات أبشر
+                 </button>
+                 <div class="modal fade" id="Account" tabindex="-1" role="dialog"
+            aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="personal">الحساب الخاص بنفاذ</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <h5 class="personalInfo-heading">حساب أبشر</h5>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="user_email">البريد الإلكتروني</span>
+                              </div>
+                            <input type="text" class="form-control" placeholder="البريد الإلكتروني" aria-label="البريد الإلكتروني" aria-describedby="البريد الإلكتروني" value="<%= resident.Account.absher_email %>" readonly>
+                        </div>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="user_password">كلمة السر</span>
+                              </div>
+                            <input type="text" class="form-control" placeholder="كلمة السر" aria-label="كلمة السر" aria-describedby="كلمة السر" value="<%= resident.Account.absher_password %>" readonly>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">إغلاق</button>
+                    </div>
+                </div>
+            </div>
+                </div>
+                <hr>
+                <h4 class="card-title mb-2">
+                    <span>الموافقة على طلب <%= resident.userID.fullname %></span>
+                </h4>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text bg-white">رقم الهاتف</span>
+                            </div>
+                            <input readonly class="form-control user_phonenumber bg-light" type="text" value="<%= resident.requestData.user_phonenumber %>"/>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text bg-white" id="code_symbol">الكود المُرسل</span>
+                              </div>
+                            <input readonly type="text" class="code form-control bg-light"  aria-label="code" aria-describedby="code" id="code"  style="border-top-left-radius: 0; 
+                            border-bottom-left-radius: 0"  value="<%= resident.code? resident.code : 'لم يتم إرسال الكود بعد' %>" />
+                            <!-- <div class="input-group-append">
+                                
+                            </div> -->
+                          </div>
+                    </div>
+                </div>
+                <hr>
+                <h4 class="card-title mb-2">
+                    <span>الموافقة أو عدم الموافقة</span>
+                </h4>
+                <div class="buttons-agreement">
+                    <input type="hidden" class="residentID" id="residentID" value="<%= resident._id %>"/>
+                    <button class="agreement btn btn-success waves-effect waves-light btn-rounded" type="submit" id="agreement" <%= resident.accepted === true? 'disabled' : '' %>>الموافقة</button>
+                    <button class="disagreement btn btn-danger waves-effect waves-light btn-rounded" type="submit"  id="disagreement" <%= resident.accepted === true? 'disabled' : '' %>>عدم الموافقة</button>
+                </div>
             </div>
         </div>
     </div>

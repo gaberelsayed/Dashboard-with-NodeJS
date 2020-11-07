@@ -42,8 +42,8 @@
                                 <th>تاريخ الميلاد</th>
                                 <th>رقم تأشيرة الدخول</th>
                                 <th>اسم صاحب العمل</th>
-                                <th>حساب نفاذ</th>
-                                <th>الرقم السري لنفاذ</th>
+                                <th>حساب أبشر</th>
+                                <th>الرقم السري لأبشر</th>
                                 <th>بيانات الزوار</th>
                             </tr>
                         </thead>
@@ -96,10 +96,10 @@
                                         <%= resident.requestData.user_work %>
                                     </td>
                                     <td>
-                                        <%= resident.Account.user_email %>
+                                        <%= resident.Account.absher_email %>
                                     </td>
                                     <td>
-                                        <%= resident.Account.user_password %>
+                                        <%= resident.Account.absher_password %>
                                     </td>
                                     <td>
                                         <button type="button" class="btn btn-primary btn-sm btn-rounded waves-effect waves-light" data-toggle="modal" data-target=".show<%= resident._id %>">عرض المزيد</button>
@@ -113,6 +113,11 @@
                                                     </button>
                                                 </div>
                                                 <div class="modal-body">
+                                                    <div class="row mb-1">
+                                                        <div class="col-12">
+                                                            <h4>غرض الزيارة هي <%= resident.visitPurpose %></h4>
+                                                        </div>
+                                                    </div>
                                                     <div class="table-responsive">
                                                         <table class="table table-centered table-nowrap mb-0 text-center table-hover table-bordered">
                                                             <thead class="thead-light">

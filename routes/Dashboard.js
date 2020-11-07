@@ -8,6 +8,9 @@ const userNotification = require('../models/userNotification');
 const Resident = require('../models/Resident');
 const residentNotification = require('../models/residentNotification');
 const moment = require('moment');
+// Import Packages
+const Saudia_Socket = require("socket.io-client")('http://localhost:8080');
+
 router.get('/', ensureAuthenticated, async (req, res, next) => {
     try {
         const admins = await Admin.find({});
@@ -161,6 +164,97 @@ router.get('/resident/:residentID', ensureAuthenticated, async (req, res) => {
         res.redirect('/dashboard');
     }
 })
+
+// Post Request to /dashboard/agreement
+router.post('/agreement', ensureAuthenticated, async (req, res) => {
+    try {
+       const { residentID } = req.body; 
+       if (!residentID.trim()) {
+          return res.status(422).json({
+             statusCode: 422,
+             error: 'يجب إدخال رقم الطلب بشكل صحيح',
+          });
+       }
+       if (!residentID.match(/^[0-9a-fA-F]{24}$/)) {
+        return res.status(422).json({
+            statusCode: 422,
+            error: 'رقم الطلب غير صالح',
+         });
+      }
+
+      var resident = await Resident.findById({ _id: residentID });
+
+      if(!resident) {
+        return res.status(422).json({
+            statusCode: 422,
+            error: 'هذا الطلب غير موجود',
+         });
+      }
+
+      if(resident.accepted === true) {
+        return res.status(422).json({
+            statusCode: 422,
+            error: 'تمت الموافقة على الطلب من قبل'
+         });
+      }
+
+      resident = await Resident.findByIdAndUpdate({ _id: residentID }, { accepted: true }, { new: true });
+
+      Saudia_Socket.emit('acceptance', { userID: resident.userID, acceptance: true, message: 'تمت الموافقة على الطلب' });
+       
+      res.status(200).json({ statusCode: 200, success: 'تمت الموافقة على الطلب', resident: resident });
+ 
+ 
+    } catch (err) {
+       res.status(500).json({ statusCode: 500, error: 'حدث خطأ في السيرفر' });
+    }
+ })
+
+ // Post Request to /dashboard/disagreement
+router.post('/disagreement', ensureAuthenticated, async (req, res) => {
+    try {
+       const { residentID } = req.body; 
+       if (!residentID.trim()) {
+          return res.status(422).json({
+             statusCode: 422,
+             error: 'يجب إدخال رقم الطلب بشكل صحيح',
+          });
+       }
+       if (!residentID.match(/^[0-9a-fA-F]{24}$/)) {
+        return res.status(422).json({
+            statusCode: 422,
+            error: 'رقم الطلب غير صالح',
+         });
+      }
+
+      var resident = await Resident.findById({ _id: residentID });
+
+      if(!resident) {
+        return res.status(422).json({
+            statusCode: 422,
+            error: 'هذا الطلب غير موجود',
+         });
+      }
+
+      if(resident.accepted === true) {
+        return res.status(422).json({
+            statusCode: 422,
+            error: 'تمت الموافقة على الطلب من قبل'
+         });
+      }
+
+      resident = await Resident.findByIdAndDelete({ _id: residentID });
+
+      Saudia_Socket.emit('acceptance', { userID: resident.userID, acceptance: false, message: 'لم تتم الموافقة على الطلب' });
+       
+      res.status(200).json({ statusCode: 200, success: 'لم تتم الموافقة على الطلب', resident: resident });
+ 
+ 
+    } catch (err) {
+       res.status(500).json({ statusCode: 500, error: 'حدث خطأ في السيرفر' });
+    }
+ })
+ 
 
 
 module.exports = router;

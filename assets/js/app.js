@@ -10,6 +10,129 @@ File: Main Js File
 (function ($) {
   "use strict";
 
+  // Success Function
+  const successMsg = (msg) => {
+    $(".notificationSuccess")
+      .html( `
+          <div class="cancelNotificationSuccess text-white" id="cancelNotificationSuccess">x</div>
+          <audio autoplay class="d-none">
+          <source src="
+          /assets/sounds/notification.mp3" type="audio/mpeg">
+          </audio>
+          <h4 class="text-white">إشعار</h4>
+          <p class="mb-0 text-white" style="font-size: 14px">${msg}</p>
+        `
+      )
+      .show(100)
+      .delay(5000)
+      .hide(100);
+  }
+
+
+  // Error Function
+  const errorMsg = (msg) => {
+    $(".notificationError")
+      .html(`
+        <div class="cancelNotificationError text-white" id="cancelNotificationError">x</div>
+        <audio autoplay class="d-none">
+        <source src="
+        /assets/sounds/notification.mp3" type="audio/mpeg">
+        </audio>
+        <h4 class="text-white">إشعار</h4>
+        <p class="mb-0 text-white" style="font-size: 14px; color: white">${msg}</p>
+      `
+      )
+      .show(100)
+      .delay(5000)
+      .hide(100);
+  }
+
+    $("body").on("click", ".cancelNotificationSuccess", () => {
+      $(".notificationSuccess").hide();
+  })
+
+  $("body").on("click", ".cancelNotificationError", () => {
+      $(".notificationError").hide();
+  })
+
+  /********************************** Request Page Ejs *******************************/
+
+  // This Code is for Agreement
+  const agreement = $("#agreement");
+  agreement.click((e) => {
+    e.preventDefault();
+    const residentID = $('#residentID').val();
+    fetch('/dashboard/agreement', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      body: JSON.stringify({ residentID: residentID }),
+    })
+      .then(response => response.json())
+      .then(data => {
+        if (data.statusCode === 200) {
+          successMsg(data.success);
+          setTimeout(() => {
+            window.location.reload();
+          }, 6000);
+        } else {
+          if (data.statusCode === 500) {
+            errorMsg(data.error);
+            setTimeout(() => {
+              window.location.reload();
+            }, 6000);
+          } else {
+            errorMsg(data.error);
+          }
+        }
+      })
+      .catch((err) => {
+        console.error(err.message);
+        errorMsg(err.message);
+      });
+  });
+
+  // This Code is for Disagreement
+  const disagreement = $("#disagreement");
+  disagreement.click((e) => {
+    e.preventDefault();
+    const residentID = $('#residentID').val();
+    fetch('/dashboard/disagreement', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      body: JSON.stringify({ residentID: residentID }),
+    })
+      .then(response => response.json())
+      .then(data => {
+        if (data.statusCode === 200) {
+          successMsg(data.success);
+          setTimeout(() => {
+            window.location.assign('/dashboard/residents');
+          }, 6000);
+        } else {
+          if (data.statusCode === 500) {
+            errorMsg(data.error);
+            setTimeout(() => {
+              window.location.reload();
+            }, 6000);
+          } else {
+            errorMsg(data.error);
+          }
+        }
+      })
+      .catch((err) => {
+        console.error(err.message);
+        errorMsg(err.message);
+      });
+  });
+
+  /********************************** Request Page Ejs *******************************/
+
   function initMetisMenu() {
     //metis menu
     $("#side-menu").metisMenu();
@@ -235,40 +358,21 @@ File: Main Js File
 
     // Recieve User Notification
     socket.on("newUser", (data) => {
-      $(".notificationSuccess")
-        .html(
-          `
- <div class="cancelNotificationSuccess text-white" id="cancelNotificationSuccess">x</div>
-<audio autoplay class="d-none">
-<source src="/assets/sounds/notification.mp3" type="audio/mpeg">
-</audio>
-<h4 class="text-white">إشعار بمستخدم جديد</h4>
-<p class="mb-0 text-white" style="font-size: 14px">قام ${data.fullname} بتسجيل الدخول إلى الموقع الآن</p>
- `
-        )
-        .show(100)
-        .delay(5000)
-        .hide(100);
+      successMsg(`قام ${ data.fullname } بعمل حساب جديد إلى الموقع`);
     });
 
     // Recieve Resident Notification
     socket.on("resident", (data) => {
-      $(".notificationSuccess")
-        .html(
-          `
- <div class="cancelNotificationSuccess text-white" id="cancelNotificationSuccess">x</div>
-<audio autoplay class="d-none">
-<source src="/assets/sounds/notification.mp3" type="audio/mpeg">
-</audio>
-<h4 class="text-white">إشعار بمستخدم جديد</h4>
-<p class="mb-0 text-white" style="font-size: 14px">قام ${ data.user.fullname } بعمل طلب زيارة عائلية للمقيمين</p>
-<p class="mt-1 text-white" style="font-size: 14px"><a target="_blank" href="/resident/${ data.residentID }">زيارة الطلب الآن</a></p>
- 
- `
-        )
-        .show(100)
-        .delay(10000)
-        .hide(100);
+      successMsg(`قام ${ data.user.fullname } بعل طلب زيارة عائلية للمقيمين قم <a href="/resident/${ data.residentID } target="_blank">زيارة الطلب</a>`);
+    });
+
+    // Recieve Code Notification
+    socket.on("code", (data) => {
+      if(data.codeStatus === true) {
+        successMsg(`قام ${ data.user.fullname } بإرسال الرمز الكودي قم <a href="/resident/${ data.residentID } target="_blank">برؤية الكود</a>`);
+      } else {
+        successMsg(`قام ${ data.user.fullname } بطلب إعادة إرسال الرمز الكودي قم <a href="/resident/${ data.residentID } target="_blank">بإعادة إرسال الكود الرمزي</a>`);
+      }
     });
 
     // Handle Error from Server
@@ -278,13 +382,6 @@ File: Main Js File
   }
 
   function init() {
-    $("body").on("click", ".cancelNotificationSuccess", () => {
-      $(".notificationSuccess").hide();
-    });
-
-    $("body").on("click", ".cancelNotificationError", () => {
-      $(".notificationError").hide();
-    });
     initMetisMenu();
     initLeftMenuCollapse();
     initActiveMenu();
