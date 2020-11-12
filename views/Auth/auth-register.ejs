@@ -35,9 +35,11 @@
                             <form class="form-horizontal" method="post" action="/auth/register">
 
                                 
-                                <% if(error.length > 0) { %>
-                                <div class="alert alert-danger flash"><%= error %></div>
-                                <% } %>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <%- include('../Partials/alert') %>
+                                    </div>
+                                  </div>
 
                                 <div class="form-group">
                                     <label for="fullname">الاسم كامل</label>

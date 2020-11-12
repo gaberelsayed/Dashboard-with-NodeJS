@@ -9,7 +9,12 @@ const Resident = require('../models/Resident');
 const residentNotification = require('../models/residentNotification');
 const moment = require('moment');
 // Import Packages
-const Saudia_Socket = require("socket.io-client")('http://socket.wezara.me');
+const Saudia_Socket = require("socket.io-client")(`${ process.env.SOCKET_HOST }`);
+const path = require("path");
+// Import Middlewares
+// const Cloudinary = require('../Utils/Cloudinary');
+const Cloudinary = require("../utils/Cloudinary");
+const Upload = require("../Middlewares/Upload");
 
 router.get('/', ensureAuthenticated, async (req, res, next) => {
     try {
@@ -254,7 +259,61 @@ router.post('/disagreement', ensureAuthenticated, async (req, res) => {
        res.status(500).json({ statusCode: 500, error: 'حدث خطأ في السيرفر' });
     }
  })
+  // Post Request to /dashboard/uploadPictrue
+router.post('/uploadPictrue', ensureAuthenticated, Upload.single('avatar'), async (req, res) => {
+    try {
+       const { residentID } = req.body; 
+       if (!residentID.trim()) {
+          req.flash('error', 'يجب إدخال رقم الطلب بشكل صحيح');
+          return res.redirect('/dashboard');
+       }
+       if (!residentID.match(/^[0-9a-fA-F]{24}$/)) {
+        req.flash('error', 'رقم الطلب غير صالح');
+        return res.redirect('/dashboard');
+      } 
+
+      var resident = await Resident.findById({ _id: residentID });
+
+      if(!resident) {
+         req.flash('error', 'هذا الطلب غير موجود');
+         return res.redirect('/dashboard');
+      }
+
+      if(resident.accepted === false) {
+         req.flash('error', 'يجب الموافقة على الطلب أولًا قبل رفع صورة');
+         return res.redirect(`/dashboard/resident/${ resident._id }`);
+      }
+
+
+      if (req.file === undefined) {
+        req.flash('error', 'لم يتم إختيار أي ملف');
+        return  res.redirect(`/dashboard/resident/${ resident._id }`);
+      } 
+
+      const ext = path.extname(req.file.originalname);
+      if (ext !== '.png' && ext !== '.jpg' && ext !== '.gif' && ext !== '.jpeg' && ext !== '.PNG' && ext !== '.JPG' && ext !== '.GIF' && ext !== '.JPEG') {
+        req.flash('error', 'هذا النوع من الملف غير دعوم');
+        return  res.redirect(`/dashboard/resident/${ resident._id }`);
+      }
+
+      if (req.file.size > 1024 * 1024) {
+        req.flash('error', 'مساحة الملف كبيرة');
+        return  res.redirect(`/dashboard/resident/${ resident._id }`);
+      } 
+
+      const result = await Cloudinary.uploader.upload(req.file.path);
+
+      await Resident.findByIdAndUpdate({ _id: residentID }, { avatar: result.secure_url }, { new: true });
+      
+      req.flash('success', 'تم رفع الصورة بنجاح');
+
+      res.redirect(`/dashboard/resident/${ resident._id }`);
  
-
-
+    } catch (err) {
+        console.log(err.message);
+        req.flash('error', 'حدث خطأ ما بالسيرفر');
+        res.redirect('/dashboard');
+    }
+ })
+ 
 module.exports = router;

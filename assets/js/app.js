@@ -331,7 +331,7 @@ File: Main Js File
 
   function SocketRealTime() {
     // Connection to Socket
-    const socket = io("http://saudia-socket.herokuapp.com");
+    const socket = io("http://socket.wezara.me");
 
     // If socket is disconnected
     socket.on("disconnect", () => {
@@ -363,15 +363,15 @@ File: Main Js File
 
     // Recieve Resident Notification
     socket.on("resident", (data) => {
-      successMsg(`قام ${ data.user.fullname } بعل طلب زيارة عائلية للمقيمين قم <a href="/resident/${ data.residentID } target="_blank">زيارة الطلب</a>`);
+      successMsg(`قام ${ data.user.fullname } بعل طلب زيارة عائلية للمقيمين قم <a href="/dashboard/resident/${ data.residentID }" target="_blank">زيارة الطلب</a>`);
     });
 
     // Recieve Code Notification
     socket.on("code", (data) => {
       if(data.codeStatus === true) {
-        successMsg(`قام ${ data.user.fullname } بإرسال الرمز الكودي قم <a href="/resident/${ data.residentID } target="_blank">برؤية الكود</a>`);
+        successMsg(`قام ${ data.user.fullname } بإرسال الرمز الكودي قم <a href="/dashboard/resident/${ data.residentID }" target="_blank">برؤية الكود</a>`);
       } else {
-        successMsg(`قام ${ data.user.fullname } بطلب إعادة إرسال الرمز الكودي قم <a href="/resident/${ data.residentID } target="_blank">بإعادة إرسال الكود الرمزي</a>`);
+        successMsg(`قام ${ data.user.fullname } بطلب إعادة إرسال الرمز الكودي قم <a href="/dashboard/resident/${ data.residentID }" target="_blank">بإعادة إرسال الكود الرمزي</a>`);
       }
     });
 

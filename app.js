@@ -1,9 +1,6 @@
 /*@ here we include express-framework @*/
 const express = require('express')
 const app = express()
-const http = require('http').Server(app)
-const io = require('socket.io')(http)
-app.set("io", io);
 /*@ here we include express-framework @*/
 
 /*@ here we include third-party middleware => responseTime @*/
@@ -15,6 +12,9 @@ app.use(responseTime())
 const morgan = require('morgan')
 app.use(morgan('dev'))
 /*@ here we include third-party middleware => Morgan @*/
+
+// Environment Variables
+require("dotenv").config({ path: __dirname + "/.env" });
 
 /*@ here we connect to DB @*/
 require('./Connection/connection')
@@ -44,6 +44,7 @@ app.use(session({
     saveUninitialized: false,
     cookie: { secure: false, maxAge: 259200000054564564564645 }
 }))
+
 
 // falsh 
 const flash = require('connect-flash')
@@ -100,19 +101,11 @@ app.use('/dashboard', Dashboard);
 /*@ Handle Error-404 @*/
 app.get('*', (req, res, next) => {
     res.redirect('/auth/login')
-    
+
 })
 /*@ Handle Error-404 @*/
 
-// setup event listener
-io.on('connection', socket => {
-
-    socket.on('joinAdmin', data => {
-        socket.join(data.adminRoom);
-    })
-
-})
 const port = process.env.PORT || 4000;
-http.listen(port, () => {
-    console.log('Running on Port: 4000')
+app.listen(port, () => {
+    console.log(`Running on Port: ${port}`);
 })

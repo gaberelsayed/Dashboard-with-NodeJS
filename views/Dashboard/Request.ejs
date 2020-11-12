@@ -9,7 +9,7 @@
             <div class="page-title-right">
                 <ol class="breadcrumb m-0">
                     <li class="breadcrumb-item"><a href="javascript: void(0);">لوحكم التحكم</a></li>
-                    <li class="breadcrumb-item active">الطلب الخاص</li>
+                    <li class="breadcrumb-item active">الطلبات</li>
                 </ol>
             </div>
 
@@ -182,7 +182,7 @@
 
 
                 <!-- visitors Button -->
-                <button type="button" class="btn btn-primary btn-rounded waves-effect waves-light" data-toggle="modal" data-target="#visitors">
+                <button type="button" class="btn btn-primary btn-rounded waves-effect waves-light mt-2 mt-md-0 " data-toggle="modal" data-target="#visitors">
                     بيانات الزوار
                  </button>
                  <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Show" aria-hidden="true" id="visitors">
@@ -293,7 +293,7 @@
                  </div>
 
                    <!-- Nafaz Button -->
-                <button type="button" class="btn btn-primary btn-rounded waves-effect waves-light" data-toggle="modal" data-target="#Account">
+                <button type="button" class="btn btn-primary btn-rounded waves-effect waves-light mt-2 mt-md-0" data-toggle="modal" data-target="#Account">
                     بيانات أبشر
                  </button>
                  <div class="modal fade" id="Account" tabindex="-1" role="dialog"
@@ -340,7 +340,7 @@
                             <input readonly class="form-control user_phonenumber bg-light" type="text" value="<%= resident.requestData.user_phonenumber %>"/>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-6 mt-2 mt-md-0">
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text bg-white" id="code_symbol">الكود المُرسل</span>
@@ -355,12 +355,35 @@
                 </div>
                 <hr>
                 <h4 class="card-title mb-2">
-                    <span>الموافقة أو عدم الموافقة</span>
+                    <span>الموافقة أو عدم الموافقة أو رفع صورة</span>
                 </h4>
-                <div class="buttons-agreement">
+                <div class="row">
                     <input type="hidden" class="residentID" id="residentID" value="<%= resident._id %>"/>
-                    <button class="agreement btn btn-success waves-effect waves-light btn-rounded" type="submit" id="agreement" <%= resident.accepted === true? 'disabled' : '' %>>الموافقة</button>
-                    <button class="disagreement btn btn-danger waves-effect waves-light btn-rounded" type="submit"  id="disagreement" <%= resident.accepted === true? 'disabled' : '' %>>عدم الموافقة</button>
+                    <div class="col-md-4">
+                        <div class="forAgreement" id="forAgreement">
+                            <button class="agreement btn btn-success waves-effect waves-light w-100" type="submit" id="agreement" <%= resident.accepted === true? 'disabled' : '' %>>الموافقة</button>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mt-2 mt-md-0">
+                        <div class="forAgreement" id="forAgreement">
+                            <button class="disagreement btn btn-danger waves-effect waves-light w-100" type="submit"  id="disagreement" <%= resident.accepted === true? 'disabled' : '' %>>عدم الموافقة</button>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 mt-2 mt-md-0">
+                        <form class="uploadForm" action="/dashboard/uploadPictrue" method="POST" enctype="multipart/form-data">
+                            <input name="residentID" type="hidden" class="residentIDform" id="residentIDform" value="<%= resident._id %>"/>
+                            <div class="input-group">
+                                <div class="custom-file">
+                                    <input type="file" class="uploadPic custom-file-input" id="uploadPic" aria-describedby="uploadPic" name="avatar">
+                                    <label class="custom-file-label" for="inputGroupFile01">الاسم لن يظهر بعد رفع الصورة</label>
+                                </div>
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary" type="submit">إتمام</button>
+                                </div>
+                            </div>
+                          </form>
+                    </div>
                 </div>
             </div>
         </div>
